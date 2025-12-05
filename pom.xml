@@ -8,6 +8,27 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <exec.mainClass>com.ufes.sistema.SistemaGestaoUsuarios</exec.mainClass>
+        <exec.mainClass>com.ufes.sistema.Main</exec.mainClass>
     </properties>
+    
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.42.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.claytonfraga</groupId>
+            <artifactId>validadorsenha</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    </dependencies>
 </project>
