@@ -27,8 +27,8 @@
 
         <dependency>
             <groupId>com.github.claytonfraga</groupId>
-            <artifactId>validadorsenha</artifactId>
-            <version>1.0.1</version>
+            <artifactId>ValidadorSenha</artifactId>
+            <version>master-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
