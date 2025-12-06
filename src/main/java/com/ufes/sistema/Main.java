@@ -4,7 +4,7 @@
  */
 package com.ufes.sistema;
 
-import com.ufes.sistema.dao.DatabaseConnection;
+import com.ufes.sistema.dao.DatabaseUtil;
 
 /**
  *
@@ -14,9 +14,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        
-        System.out.println(databaseConnection);
-
+        DatabaseUtil.inicializarTabelas();
     }
 }
