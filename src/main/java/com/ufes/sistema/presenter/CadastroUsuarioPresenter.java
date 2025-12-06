@@ -1,5 +1,6 @@
 package com.ufes.sistema.presenter;
 
+import com.pss.senha.validacao.ValidadorSenha;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.view.CadastroUsuarioView;
@@ -30,13 +31,28 @@ public class CadastroUsuarioPresenter {
         String nome = view.getNome();
         String login = view.getEmail();
         String senha = view.getSenha();
+        String confirmarSenha = view.getConfirmarSenha();
 
         if(nome.isEmpty() || login.isEmpty() || senha.isEmpty()) {
             view.mostrarMensagem("Preencha todos os campos!");
             return;
         }
 
+        if (!senha.equals(confirmarSenha)) {
+            view.mostrarMensagem("As senhas não conferem!");
+            return;
+        }
+
+         ValidadorSenha validador = new ValidadorSenha();
+         
+         validador.validar(senha);
+        
         try {
+            if (repository.existeUsuarioComLogin(login)) {
+                view.mostrarMensagem("Este E-mail/Login já está cadastrado!");
+                return;
+            }
+
             int qtdUsuarios = repository.contarUsuarios();
             
             boolean ehPrimeiro = (qtdUsuarios == 0);
@@ -62,6 +78,7 @@ public class CadastroUsuarioPresenter {
             }
             
             view.mostrarMensagem(msg);
+            view.limparCampos(); 
             view.fechar();
 
         } catch (Exception e) {
