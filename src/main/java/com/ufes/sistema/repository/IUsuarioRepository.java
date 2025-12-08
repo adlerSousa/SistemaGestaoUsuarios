@@ -6,4 +6,5 @@ public interface IUsuarioRepository {
     void cadastrarUsuario(Usuario usuario);
     boolean existeUsuarioComLogin(String login);
     int contarUsuarios();
+    Usuario buscarPorLogin(String login);
 }
