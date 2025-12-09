@@ -7,6 +7,7 @@ package com.ufes.sistema.presenter;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.view.LoginView;
+import com.ufes.sistema.presenter.PrincipalPresenter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -66,8 +67,9 @@ public class LoginPresenter {
        
         view.mostrarMensagem("Login realizado com sucesso! Bem-vindo(a) " + usuario.getNome());
 
-        // TODO: Tela Principal (MDI) 
-        // new PrincipalPresenter(usuario); 
+        
+        new PrincipalPresenter(usuario,repository); 
+        
         view.fechar(); 
     }
 
