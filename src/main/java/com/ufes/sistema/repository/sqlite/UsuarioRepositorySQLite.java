@@ -32,6 +32,20 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
             """;
 
             stmt.execute(sql);
+            
+            String sqlNotificacao = """
+            CREATE TABLE IF NOT EXISTS notificacao (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                conteudo TEXT NOT NULL,
+                id_remetente INTEGER NOT NULL,
+                id_destinatario INTEGER NOT NULL,
+                lida BOOLEAN NOT NULL DEFAULT 0,
+                data_envio TEXT NOT NULL,
+                FOREIGN KEY(id_remetente) REFERENCES usuario(id),
+                FOREIGN KEY(id_destinatario) REFERENCES usuario(id)
+            );
+        """;
+        stmt.execute(sqlNotificacao);
 
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar tabela: " + e.getMessage());

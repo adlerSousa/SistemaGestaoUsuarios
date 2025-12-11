@@ -1,5 +1,7 @@
 package com.ufes.sistema.presenter;
 
+
+import com.github.adlersousa.logger.lib.LoggerLib;
 import com.pss.senha.validacao.ValidadorSenha;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
@@ -7,6 +9,7 @@ import com.ufes.sistema.view.CadastroUsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.List;
 
 public class CadastroUsuarioPresenter {
 
@@ -39,17 +42,27 @@ public class CadastroUsuarioPresenter {
         }
 
         if (!senha.equals(confirmarSenha)) {
-            view.mostrarMensagem("As senhas não conferem!");
+            String msg = "As senhas não conferem!";
+            view.mostrarMensagem(msg);
+            registrarLogFalha(nome,msg);
             return;
         }
 
          ValidadorSenha validador = new ValidadorSenha();
+         List<String> errosSenha = validador.validar(senha);
          
-         validador.validar(senha);
+         if(!errosSenha.isEmpty()) {
+            String msgErro = "Senha inválida:\n" + String.join("\n", errosSenha);
+            view.mostrarMensagem(msgErro);
+            registrarLogFalha(nome, "Senha inválida de acordo com regras de segurança"); 
+            return;
+        }
         
         try {
             if (repository.existeUsuarioComLogin(login)) {
-                view.mostrarMensagem("Este E-mail/Login já está cadastrado!");
+                String msg = "Este E-mail/Login já está cadastrado!";
+                view.mostrarMensagem(msg);
+                registrarLogFalha(nome,msg);
                 return;
             }
 
@@ -69,6 +82,8 @@ public class CadastroUsuarioPresenter {
             );
 
             repository.cadastrarUsuario(novoUsuario);
+            
+            LoggerLib.getInstance().escrever("INCLUSAO_USUARIO", novoUsuario.getNome(), "SISTEMA", true, null);
 
             String msg = "Usuário cadastrado com sucesso!";
             if(ehPrimeiro) {
@@ -82,8 +97,13 @@ public class CadastroUsuarioPresenter {
             view.fechar();
 
         } catch (Exception e) {
+            registrarLogFalha(nome, e.getMessage());
             view.mostrarMensagem("Erro ao salvar: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    private void registrarLogFalha(String nome,String msg){
+        LoggerLib.getInstance().escrever("INCLUSAO_USUARIO", nome, "SISTEMA", false, msg);
     }
 }
