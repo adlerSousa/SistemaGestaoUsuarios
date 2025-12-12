@@ -6,7 +6,10 @@ package com.ufes.sistema.presenter;
 
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
+import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.view.PrincipalView;
+import com.ufes.sistema.view.EnviarNotificacaoView;
+import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
@@ -19,10 +22,12 @@ public class PrincipalPresenter {
     private final PrincipalView view;
     private final Usuario usuarioLogado;
     private final IUsuarioRepository repository;
+    private final INotificacaoRepository notificacaoRepository;
 
-    public PrincipalPresenter(Usuario usuario, IUsuarioRepository repository) {
+    public PrincipalPresenter(Usuario usuario, IUsuarioRepository uRepository, INotificacaoRepository nRepository) {
         this.usuarioLogado = usuario;
-        this.repository = repository;
+        this.repository = uRepository;
+        this.notificacaoRepository = nRepository;
         this.view = new PrincipalView();
 
         inicializarSistema();
@@ -36,10 +41,11 @@ public class PrincipalPresenter {
         this.view.setVisible(true);
     }
 
-    private void atualizarRodape() {
+    public void atualizarRodape() {
         String perfil = usuarioLogado.isAdmin() ? "Administrador" : "Usuário";
         this.view.getLblUsuario().setText("Usuário: " + usuarioLogado.getNome() + " | Perfil: " + perfil);
-        this.view.getBtnNotificacoes().setText("0 Notificações pendentes");
+        int naoLidas = notificacaoRepository.contarNaoLidas(usuarioLogado.getId());
+        this.view.getBtnNotificacoes().setText(naoLidas + " Notificações pendentes");
     }
 
     private void configurarPermissoes() {
@@ -50,14 +56,16 @@ public class PrincipalPresenter {
 
     private void inicializarMenus() {
 
-       // this.view.getMitManterUsuarios().addActionListener((ActionEvent e) -> {
-          //  ManterUsuariosPresenter presenter = new ManterUsuariosPresenter(repository);
-           // view.getDesktopPane().add(presenter.getView());
-          //  presenter.getView().toFront();
-      //  });
-
         this.view.getMitEnviarNotificacao().addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(view, "Tela de Enviar Notificação");
+            if (usuarioLogado.isAdmin()) {
+                EnviarNotificacaoView notifView = new EnviarNotificacaoView();
+
+                new EnviarNotificacaoPresenter(notifView, notificacaoRepository, repository, usuarioLogado);
+                this.view.getDesktopPane().add(notifView);
+                notifView.toFront();
+            } else {
+                JOptionPane.showMessageDialog(view, "Você não tem permissão para enviar notificações.");
+            }
         });
 
         this.view.getMitConfigurarLog().addActionListener((ActionEvent e) -> {
@@ -73,8 +81,12 @@ public class PrincipalPresenter {
         });
 
         this.view.getBtnNotificacoes().addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(view, "Tela de Minhas Notificações");
+            MinhasNotificacoesView minhasNotifView = new MinhasNotificacoesView();
+            new MinhasNotificacoesPresenter(minhasNotifView, notificacaoRepository, usuarioLogado, this);
+            this.view.getDesktopPane().add(minhasNotifView);
+            minhasNotifView.toFront();
         });
+
     }
 
     private void fecharSistema() {
