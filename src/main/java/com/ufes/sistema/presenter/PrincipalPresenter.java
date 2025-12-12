@@ -9,6 +9,7 @@ import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.view.PrincipalView;
 import com.ufes.sistema.view.EnviarNotificacaoView;
+import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
@@ -40,7 +41,7 @@ public class PrincipalPresenter {
         this.view.setVisible(true);
     }
 
-    private void atualizarRodape() {
+    public void atualizarRodape() {
         String perfil = usuarioLogado.isAdmin() ? "Administrador" : "Usuário";
         this.view.getLblUsuario().setText("Usuário: " + usuarioLogado.getNome() + " | Perfil: " + perfil);
         int naoLidas = notificacaoRepository.contarNaoLidas(usuarioLogado.getId());
@@ -54,12 +55,12 @@ public class PrincipalPresenter {
     }
 
     private void inicializarMenus() {
-        
+
         this.view.getMitEnviarNotificacao().addActionListener((ActionEvent e) -> {
             if (usuarioLogado.isAdmin()) {
                 EnviarNotificacaoView notifView = new EnviarNotificacaoView();
-     
-                new EnviarNotificacaoPresenter(notifView, notificacaoRepository,repository, usuarioLogado);
+
+                new EnviarNotificacaoPresenter(notifView, notificacaoRepository, repository, usuarioLogado);
                 this.view.getDesktopPane().add(notifView);
                 notifView.toFront();
             } else {
@@ -80,8 +81,12 @@ public class PrincipalPresenter {
         });
 
         this.view.getBtnNotificacoes().addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(view, "Tela de Minhas Notificações");
+            MinhasNotificacoesView minhasNotifView = new MinhasNotificacoesView();
+            new MinhasNotificacoesPresenter(minhasNotifView, notificacaoRepository, usuarioLogado, this);
+            this.view.getDesktopPane().add(minhasNotifView);
+            minhasNotifView.toFront();
         });
+
     }
 
     private void fecharSistema() {
