@@ -7,6 +7,7 @@ import com.ufes.sistema.view.CadastroUsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.List;
 
 public class CadastroUsuarioPresenter {
 
@@ -44,8 +45,14 @@ public class CadastroUsuarioPresenter {
         }
 
          ValidadorSenha validador = new ValidadorSenha();
-         
-         validador.validar(senha);
+     
+        List<String> resultadoValidacao = validador.validar(senha);
+        if(!resultadoValidacao.isEmpty()){
+            view.mostrarMensagem("Senha inválida: " + resultadoValidacao.get(0));
+            return;
+        }
+        
+        
         
         try {
             if (repository.existeUsuarioComLogin(login)) {
