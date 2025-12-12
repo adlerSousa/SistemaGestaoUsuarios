@@ -7,6 +7,8 @@ package com.ufes.sistema.presenter;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.repository.INotificacaoRepository;
+import com.ufes.sistema.repository.IConfiguracaoRepository;
+import com.ufes.sistema.view.ConfiguracaoView;
 import com.ufes.sistema.view.PrincipalView;
 import com.ufes.sistema.view.EnviarNotificacaoView;
 import com.ufes.sistema.view.MinhasNotificacoesView;
@@ -23,11 +25,13 @@ public class PrincipalPresenter {
     private final Usuario usuarioLogado;
     private final IUsuarioRepository repository;
     private final INotificacaoRepository notificacaoRepository;
+    private final IConfiguracaoRepository configuracaoRepository;
 
-    public PrincipalPresenter(Usuario usuario, IUsuarioRepository uRepository, INotificacaoRepository nRepository) {
+    public PrincipalPresenter(Usuario usuario, IUsuarioRepository uRepository, INotificacaoRepository nRepository, IConfiguracaoRepository cRepository) {
         this.usuarioLogado = usuario;
         this.repository = uRepository;
         this.notificacaoRepository = nRepository;
+        this.configuracaoRepository = cRepository;
         this.view = new PrincipalView();
 
         inicializarSistema();
@@ -69,7 +73,18 @@ public class PrincipalPresenter {
         });
 
         this.view.getMitConfigurarLog().addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(view, "Tela de Configuração de Log");
+            
+            if (usuarioLogado.isAdmin()) {
+                ConfiguracaoView configView = new ConfiguracaoView();
+
+              
+                new ConfiguracaoPresenter(configView, configuracaoRepository, usuarioLogado);
+
+                this.view.getDesktopPane().add(configView);
+                configView.toFront();
+            } else {
+                JOptionPane.showMessageDialog(view, "Você não tem permissão para configurar o sistema.");
+            }
         });
 
         this.view.getMitAlterarSenha().addActionListener((ActionEvent e) -> {

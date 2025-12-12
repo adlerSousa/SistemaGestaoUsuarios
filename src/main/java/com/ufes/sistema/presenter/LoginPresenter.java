@@ -8,6 +8,7 @@ import com.github.adlersousa.logger.lib.LoggerLib;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.repository.INotificacaoRepository;
+import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.view.LoginView;
 import com.ufes.sistema.presenter.PrincipalPresenter;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,14 @@ public class LoginPresenter {
     private LoginView view;
     private IUsuarioRepository repository;
     private INotificacaoRepository nRepository;
+    private IConfiguracaoRepository cRepository;
     
 
-    public LoginPresenter(LoginView view, IUsuarioRepository repository,INotificacaoRepository nRepository) {
+    public LoginPresenter(LoginView view, IUsuarioRepository repository,INotificacaoRepository nRepository, IConfiguracaoRepository cRepository) {
         this.view = view;
         this.repository = repository;
         this.nRepository = nRepository;
+        this.cRepository = cRepository;
 
        
         this.view.getBtnEntrar().addActionListener(new ActionListener() {
@@ -73,7 +76,7 @@ public class LoginPresenter {
             view.mostrarMensagem("Login realizado com sucesso! Bem-vindo(a) " + usuario.getNome());
             LoggerLib.getInstance().escrever("LOGIN", usuario.getNome(), "SISTEMA", true, null);
 
-            new PrincipalPresenter(usuario, repository, nRepository);
+            new PrincipalPresenter(usuario, repository, nRepository,cRepository);
             view.fechar();
 
         } catch (Exception e) {
