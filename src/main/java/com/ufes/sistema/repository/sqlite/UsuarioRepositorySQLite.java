@@ -32,20 +32,6 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
             """;
 
             stmt.execute(sql);
-            
-            String sqlNotificacao = """
-            CREATE TABLE IF NOT EXISTS notificacao (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                conteudo TEXT NOT NULL,
-                id_remetente INTEGER NOT NULL,
-                id_destinatario INTEGER NOT NULL,
-                lida BOOLEAN NOT NULL DEFAULT 0,
-                data_envio TEXT NOT NULL,
-                FOREIGN KEY(id_remetente) REFERENCES usuario(id),
-                FOREIGN KEY(id_destinatario) REFERENCES usuario(id)
-            );
-        """;
-        stmt.execute(sqlNotificacao);
 
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar tabela: " + e.getMessage());
@@ -129,5 +115,34 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
         }
         return null;
     }
+    
+    @Override
+public List<Usuario> buscarTodos() {
+    List<Usuario> usuarios = new ArrayList<>();
+    String sql = "SELECT * FROM usuario ORDER BY nome ASC";
+    
+    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        
+        while (rs.next()) {
+            Usuario u = new Usuario(
+                rs.getString("nome"),
+                rs.getString("login"),
+                rs.getString("senha"),
+                rs.getBoolean("admin"),
+                rs.getBoolean("autorizado"),
+                java.time.LocalDate.parse(rs.getString("data_cadastro"))
+            );
+            u.setId(rs.getInt("id")); 
+            usuarios.add(u);
+        }
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        
+    }
+    return usuarios;
+}
 
 }
