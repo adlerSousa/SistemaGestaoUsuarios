@@ -30,5 +30,10 @@
             <artifactId>ValidadorSenha</artifactId>
             <version>master-SNAPSHOT</version>
         </dependency>
+        <dependency>
+	    <groupId>com.github.adlerSousa</groupId>
+	    <artifactId>sistema-log-lib</artifactId>
+	    <version>1.0.3</version>
+	</dependency>
     </dependencies>
 </project>

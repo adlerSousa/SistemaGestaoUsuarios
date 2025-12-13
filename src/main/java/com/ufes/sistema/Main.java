@@ -7,7 +7,11 @@ package com.ufes.sistema;
 import com.ufes.sistema.presenter.CadastroUsuarioPresenter;
 import com.ufes.sistema.presenter.LoginPresenter;
 import com.ufes.sistema.repository.IUsuarioRepository;
+import com.ufes.sistema.repository.INotificacaoRepository;
+import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.repository.sqlite.UsuarioRepositorySQLite;
+import com.ufes.sistema.repository.sqlite.NotificacaoRepositorySQLite;
+import com.ufes.sistema.repository.sqlite.ConfiguracaoRepositorySQLite;
 import com.ufes.sistema.view.CadastroUsuarioView;
 import com.ufes.sistema.view.LoginView;
 import javax.swing.JOptionPane;
@@ -31,6 +35,9 @@ public class Main {
         
         try{
             IUsuarioRepository repository = new UsuarioRepositorySQLite();
+            INotificacaoRepository nRepository = new NotificacaoRepositorySQLite();
+            IConfiguracaoRepository cRepository = new ConfiguracaoRepositorySQLite();
+            
             int qtdUsuarios = repository.contarUsuarios();
             
             if(qtdUsuarios == 0){
@@ -38,7 +45,7 @@ public class Main {
                 new CadastroUsuarioPresenter(view, repository);
             }else{
                 LoginView view = new LoginView();
-                new LoginPresenter(view,repository);
+                new LoginPresenter(view,repository,nRepository, cRepository);
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Erro fatal ao iniciar sistema" + e.getMessage());
