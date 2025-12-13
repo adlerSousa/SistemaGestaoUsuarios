@@ -12,6 +12,7 @@ import com.ufes.sistema.view.CadastroUsuarioView;
 import com.ufes.sistema.view.LoginView;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class CadastroUsuarioPresenter {
 
@@ -25,16 +26,18 @@ public class CadastroUsuarioPresenter {
     }
 
     public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository, boolean isModoAdmin, Usuario usuarioLogado) {
-        this.view = view;
-        this.repository = repository;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
         this.modoAdmin = isModoAdmin;
-        this.usuarioLogado = usuarioLogado;
+        
+        if (this.modoAdmin) {
+            this.usuarioLogado = Objects.requireNonNull(usuarioLogado, "No modo administrativo, o usuário logado é obrigatório!");
+            this.view.setTitle("Novo Usuário (Modo Administrativo)");
+        } else {
+            this.usuarioLogado = null;
+        }
         
         this.view.getBtnSalvar().addActionListener(e -> salvarUsuario());
-        
-        if (modoAdmin) {
-            this.view.setTitle("Novo Usuário (Modo Administrativo)");
-        }
         
         this.view.setVisible(true);
     }

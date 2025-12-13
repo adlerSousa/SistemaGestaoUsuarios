@@ -6,6 +6,7 @@ import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.view.ConfiguracaoView;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class ConfiguracaoPresenter {
 
@@ -15,9 +16,13 @@ public class ConfiguracaoPresenter {
     private Configuracao configuracaoAtual;
 
     public ConfiguracaoPresenter(ConfiguracaoView view, IConfiguracaoRepository repository, Usuario admin) {
-        this.view = view;
-        this.repository = repository;
-        this.administradorLogado = admin;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
+        this.administradorLogado = Objects.requireNonNull(admin, "O Usuário Logado é obrigatório");
+        
+        if(!administradorLogado.isAdmin()){
+            throw new SecurityException("Acesso negado: Usuário não é administrador.");
+        }
 
         carregarConfiguracao();
 

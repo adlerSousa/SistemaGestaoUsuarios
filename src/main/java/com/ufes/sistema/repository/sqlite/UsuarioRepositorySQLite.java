@@ -75,7 +75,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
 
     @Override
     public boolean existeUsuarioComNomeUsuario(String nomeUsuario) {
-        String sql = "SELECT 1 FROM usuario WHERE login = ?";
+        String sql = "SELECT 1 FROM usuario WHERE nome_usuario = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nomeUsuario);
@@ -91,7 +91,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
 
     @Override
     public Usuario buscarPorNomeUsuario(String nomeUsuario) {
-        String sql = "SELECT * FROM usuario WHERE login = ?";
+        String sql = "SELECT * FROM usuario WHERE nome_usuario = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nomeUsuario);
@@ -165,7 +165,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
     
     @Override
     public void atualizar(Usuario usuario) {
-        String sql = "UPDATE usuario SET nome=?, login=?, senha=?, admin=?, autorizado=? WHERE id=?";
+        String sql = "UPDATE usuario SET nome=?, nome_usuario=?, senha=?, admin=?, autorizado=? WHERE id=?";
         
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -221,6 +221,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
     public void restaurarSistemaCompleto() throws Exception {
         String sqlNotificacoes = "DELETE FROM notificacao";
         String sqlUsuarios = "DELETE FROM usuario";
+        String sqlResetSeq = "DELETE FROM sqlite_sequence WHERE name='usuario' OR name='notificacao'";
         
         Connection conn = DatabaseConnection.getInstance().getConnection();
         boolean autoCommitOriginal = conn.getAutoCommit();
@@ -230,6 +231,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
             
             stmt.executeUpdate(sqlNotificacoes);
             stmt.executeUpdate(sqlUsuarios);
+            stmt.executeUpdate(sqlResetSeq);
             
             conn.commit();
             

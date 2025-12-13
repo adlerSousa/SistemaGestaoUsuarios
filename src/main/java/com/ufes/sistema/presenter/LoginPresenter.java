@@ -10,19 +10,20 @@ import com.ufes.sistema.presenter.PrincipalPresenter;
 import com.ufes.sistema.view.CadastroUsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class LoginPresenter {
 
     private LoginView view;
     private IUsuarioRepository repository;
-    private INotificacaoRepository nRepository;
-    private IConfiguracaoRepository cRepository;
+    private INotificacaoRepository notificacaoRepository;
+    private IConfiguracaoRepository configuracaoRepository;
     
-    public LoginPresenter(LoginView view, IUsuarioRepository repository,INotificacaoRepository nRepository, IConfiguracaoRepository cRepository) {
-        this.view = view;
-        this.repository = repository;
-        this.nRepository = nRepository;
-        this.cRepository = cRepository;
+    public LoginPresenter(LoginView view, IUsuarioRepository repository,INotificacaoRepository notificacaoRepository, IConfiguracaoRepository configuracaoRepository) {
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "A Repository é obrigatória");
+        this.notificacaoRepository = Objects.requireNonNull(notificacaoRepository, "A Repository é obrigatória");
+        this.configuracaoRepository = Objects.requireNonNull(configuracaoRepository, "A Repository é obrigatória");
 
        
         this.view.getBtnEntrar().addActionListener(new ActionListener() {
@@ -74,7 +75,7 @@ public class LoginPresenter {
             view.mostrarMensagem("Login realizado com sucesso! Bem-vindo(a) " + usuario.getNome());
             LoggerLib.getInstance().escrever("LOGIN", usuario.getNome(), "SISTEMA", true, null);
 
-            new PrincipalPresenter(usuario, repository, nRepository,cRepository);
+            new PrincipalPresenter(usuario, repository, notificacaoRepository,configuracaoRepository);
             view.fechar();
 
         } catch (Exception e) {

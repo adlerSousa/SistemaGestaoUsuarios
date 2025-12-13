@@ -6,6 +6,7 @@ import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.util.List;
+import java.util.Objects;
 
 public class MinhasNotificacoesPresenter {
     private final MinhasNotificacoesView view;
@@ -14,11 +15,11 @@ public class MinhasNotificacoesPresenter {
     private final PrincipalPresenter principalPresenter; 
     private List<Notificacao> notificacoesAtuais;
 
-    public MinhasNotificacoesPresenter(MinhasNotificacoesView view, INotificacaoRepository repo, Usuario user, PrincipalPresenter principal) {
-        this.view = view;
-        this.repository = repo;
-        this.usuarioLogado = user;
-        this.principalPresenter = principal;
+    public MinhasNotificacoesPresenter(MinhasNotificacoesView view, INotificacaoRepository repository, Usuario user, PrincipalPresenter principal) {
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
+        this.usuarioLogado = Objects.requireNonNull(user, "O Usuário Logado é obrigatório");
+        this.principalPresenter = Objects.requireNonNull(principal, "O Presenter Principal é obrigatório");
 
         this.view.getBtnMarcarLida().addActionListener(e -> marcarComoLida());
         this.view.getBtnFechar().addActionListener(e -> view.fechar());

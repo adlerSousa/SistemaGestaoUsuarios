@@ -9,6 +9,7 @@ import com.ufes.sistema.view.EnviarNotificacaoView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Objects;
 
 public class EnviarNotificacaoPresenter {
     
@@ -18,10 +19,14 @@ public class EnviarNotificacaoPresenter {
     private final Usuario administradorLogado;
     
     public EnviarNotificacaoPresenter(EnviarNotificacaoView view, INotificacaoRepository notificacaoRepository,IUsuarioRepository usuarioRepository, Usuario admin) {
-        this.view = view;
-        this.notificacaoRepository = notificacaoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.administradorLogado = admin;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.notificacaoRepository = Objects.requireNonNull(notificacaoRepository, "A Repository de Notificação é obrigatória");
+        this.usuarioRepository = Objects.requireNonNull(usuarioRepository,"A Repository de Usuário é obrigatória");
+        this.administradorLogado = Objects.requireNonNull(admin, "O Usuário Logado é obrigatório");
+        
+        if(!administradorLogado.isAdmin()){
+            throw new SecurityException("Acesso negado: Usuário não é administrador.");
+        }
         
         carregarUsuariosNaView();
 

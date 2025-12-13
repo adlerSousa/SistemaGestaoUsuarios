@@ -22,21 +22,26 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="btnFechar" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lblNova" min="-2" max="-2" attributes="0"/>
                       <Component id="lblAtual" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="lblConfirmacao" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="txtSenhaAtual" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNovaSenha" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtConfirmacao" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnSalvar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="txtSenhaAtual" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtNovaSenha" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtConfirmacao" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="86" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="131" max="32767" attributes="0"/>
+              <Component id="btnFechar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+              <Component id="btnSalvar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -88,7 +93,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblConfirmacao">
       <Properties>
-        <Property name="text" type="java.lang.String" value="        Confirmar  senha:"/>
+        <Property name="text" type="java.lang.String" value="        Confirmar  Senha:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtConfirmacao">
