@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -22,9 +23,13 @@ public class ManterUsuarioPresenter {
     private List<Usuario> listaUsuarios;
 
     public ManterUsuarioPresenter(ManterUsuarioView view, IUsuarioRepository repository, Usuario adminLogado) {
-        this.view = view;
-        this.repository = repository;
-        this.usuarioLogado = adminLogado;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
+        this.usuarioLogado = Objects.requireNonNull(adminLogado, "O Usuário Logado é obrigatório");
+        
+        if (!usuarioLogado.isAdmin()) {
+         throw new SecurityException("Acesso negado: Usuário não é administrador.");
+        }
 
         carregarTabela();
 

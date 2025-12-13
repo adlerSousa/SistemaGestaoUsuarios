@@ -8,6 +8,7 @@ import com.ufes.sistema.view.RestaurarSistemaView;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -18,9 +19,14 @@ public class RestaurarSistemaPresenter {
     private Usuario usuarioLogado;
 
     public RestaurarSistemaPresenter(RestaurarSistemaView view, IUsuarioRepository repository, Usuario admin) {
-        this.view = view;
-        this.repository = repository;
-        this.usuarioLogado = admin;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
+        
+        this.usuarioLogado = Objects.requireNonNull(admin, "O Usuário Logado é obrigatório");
+        
+        if (!usuarioLogado.isAdmin()) {
+             throw new SecurityException("Acesso negado: Usuário não é administrador.");
+        }
         
         this.view.getBtnRestaurarSistema().addActionListener(this::confirmarRestauracao);
         
@@ -66,6 +72,8 @@ public class RestaurarSistemaPresenter {
     private void executarRestauracao() {
         try {
             view.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            
+            view.mostrarMensagem("Restaurando o sistema...");
             
             repository.restaurarSistemaCompleto();
             

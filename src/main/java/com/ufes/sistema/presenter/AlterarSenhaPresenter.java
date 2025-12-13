@@ -7,6 +7,7 @@ import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.view.AlterarSenhaView;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 public class AlterarSenhaPresenter {
 
@@ -16,11 +17,11 @@ public class AlterarSenhaPresenter {
     private final ValidadorSenha validador;
 
     public AlterarSenhaPresenter(AlterarSenhaView view, IUsuarioRepository repository, Usuario usuario) {
-        this.view = view;
-        this.repository = repository;
-        this.usuarioLogado = usuario;
+        this.view = Objects.requireNonNull(view, "A view é obrigatória.");
+        this.repository = Objects.requireNonNull(repository, "O Repositório é obrigatório");
+        this.usuarioLogado = Objects.requireNonNull(usuario, "O Usuário Logado é obrigatório");
         this.validador = new ValidadorSenha();
-
+        
         this.view.getBtnSalvar().addActionListener(e -> alterarSenha());
         this.view.getBtnFechar().addActionListener(e -> view.fechar());
 
