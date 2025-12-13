@@ -1,37 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.ufes.sistema.view;
+
 import java.util.List;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.logging.Logger;
 
 import com.ufes.sistema.model.Usuario;
+import javax.swing.JInternalFrame;
+import javax.swing.ListSelectionModel;
 
-/**
- *
- * @author Adler
- */
-public class EnviarNotificacaoView extends javax.swing.JInternalFrame {
+public class EnviarNotificacaoView extends JInternalFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EnviarNotificacaoView.class.getName());
+    private static final java.util.logging.Logger logger = Logger.getLogger(EnviarNotificacaoView.class.getName());
 
     private List<Usuario> usuariosNaTabela;
     
-    // Construtor (método initComponents é gerado automaticamente pelo NetBeans)
     public EnviarNotificacaoView() {
         initComponents();
         this.usuariosNaTabela = new ArrayList<>();
-        this.tblUsuarios.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        this.tblUsuarios.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
     
-    // --- MÉTODOS REQUERIDOS PELO PRESENTER (CONTRATO) ---
-    
-    // 1. Getters para os botões (para adicionar ActionListeners)
     public JButton getBtnEnviar() {
         return btnEnviar;
     }
@@ -40,18 +31,15 @@ public class EnviarNotificacaoView extends javax.swing.JInternalFrame {
         return btnFechar;
     }
     
-    // 2. Retorna a mensagem digitada
     public String getMensagem() {
         return txtMensagem.getText(); 
     }
     
-    // 3. Método complexo que retorna os objetos Usuario selecionados
     public List<Usuario> getUsuariosSelecionados() {
         List<Usuario> selecionados = new ArrayList<>();
         int[] linhasSelecionadas = tblUsuarios.getSelectedRows();
 
         for (int i : linhasSelecionadas) {
-            // Usa o índice da tabela para pegar o objeto real da lista auxiliar
             if (i >= 0 && i < usuariosNaTabela.size()) {
                 selecionados.add(usuariosNaTabela.get(i));
             }
@@ -59,11 +47,10 @@ public class EnviarNotificacaoView extends javax.swing.JInternalFrame {
         return selecionados;
     }
 
-    // 4. Método para o Presenter preencher a tabela
     public void carregarUsuarios(List<Usuario> usuarios) {
         this.usuariosNaTabela = usuarios;
         DefaultTableModel model = (DefaultTableModel) tblUsuarios.getModel();
-        model.setRowCount(0); // Limpa tabela
+        model.setRowCount(0);
 
         for (Usuario u : usuarios) {
             model.addRow(new Object[]{
@@ -74,7 +61,6 @@ public class EnviarNotificacaoView extends javax.swing.JInternalFrame {
         }
     }
     
-    // 5. Métodos de utilidade (feedback e limpeza)
     public void mostrarMensagem(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }

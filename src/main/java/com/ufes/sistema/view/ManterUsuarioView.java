@@ -1,20 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
 import javax.swing.*;
 
-/**
- *
- * @author Guiguito
- */
-public class ManterUsuarioView extends javax.swing.JInternalFrame {
+public class ManterUsuarioView extends JInternalFrame {
 
-    /**
-     * Creates new form ManterUsuarioView
-     */
     public ManterUsuarioView() {
         initComponents();
         this.setClosable(true); 
@@ -45,7 +34,7 @@ public class ManterUsuarioView extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrTabelaUsuario = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnAutorizar = new javax.swing.JButton();
         btnCriarNovoUsuario = new javax.swing.JButton();
@@ -63,7 +52,7 @@ public class ManterUsuarioView extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblUsuarios);
+        scrTabelaUsuario.setViewportView(tblUsuarios);
 
         btnAutorizar.setText("Autorizar");
 
@@ -93,14 +82,14 @@ public class ManterUsuarioView extends javax.swing.JInternalFrame {
                         .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCriarNovoUsuario))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scrTabelaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrTabelaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAutorizar)
@@ -123,7 +112,7 @@ public class ManterUsuarioView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCriarNovoUsuario;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnTornarAdmin;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane scrTabelaUsuario;
     private javax.swing.JTable tblUsuarios;
     // End of variables declaration//GEN-END:variables
 }

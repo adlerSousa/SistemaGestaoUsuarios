@@ -1,20 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
+import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Adler
- */
-public class AlterarSenhaView extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form AlteracaoSenhaView
-     */
+public class AlterarSenhaView extends JInternalFrame {
     public AlterarSenhaView() {
         initComponents();
     }
@@ -87,16 +76,11 @@ public class AlterarSenhaView extends javax.swing.JInternalFrame {
 
         lblAtual.setText("Senha Atual:");
 
-        txtSenhaAtual.setText("jPasswordField1");
-
         lblNova.setText("Nova Senha:");
 
-        txtNovaSenha.setText("jPasswordField1");
         txtNovaSenha.addActionListener(this::txtNovaSenhaActionPerformed);
 
         lblConfirmacao.setText("        Confirmar  senha:");
-
-        txtConfirmacao.setText("jPasswordField1");
 
         btnFechar.setText("Fechar");
 
@@ -120,7 +104,7 @@ public class AlterarSenhaView extends javax.swing.JInternalFrame {
                     .addComponent(txtNovaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtConfirmacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalvar))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

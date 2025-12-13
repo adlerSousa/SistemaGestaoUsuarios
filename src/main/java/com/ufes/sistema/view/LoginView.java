@@ -1,31 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
-/**
- *
- * @author Adler
- */
-public class LoginView extends javax.swing.JFrame {
+public class LoginView extends JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
+    private static final Logger logger = Logger.getLogger(LoginView.class.getName());
 
-    /**
-     * Creates new form LoginView
-     */
     public LoginView() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
     
-    
-    public String getLogin() {
-        return txtLogin.getText();
+    public String getNomeUsuario() {
+        return txtNomeUsuario.getText();
     }
 
     public String getSenha() {
@@ -57,9 +47,9 @@ public class LoginView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtLogin = new javax.swing.JTextField();
+        lblNomeUsuario = new javax.swing.JLabel();
+        lblSenha = new javax.swing.JLabel();
+        txtNomeUsuario = new javax.swing.JTextField();
         btnEntrar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
@@ -67,9 +57,9 @@ public class LoginView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Email");
+        lblNomeUsuario.setText("Nome de Usuário");
 
-        jLabel2.setText("  Senha");
+        lblSenha.setText("  Senha");
 
         btnEntrar.setText("Entrar");
 
@@ -90,11 +80,11 @@ public class LoginView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(lblNomeUsuario)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2)
+                                .addComponent(lblSenha)
                                 .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                                .addComponent(txtLogin))))
+                                .addComponent(txtNomeUsuario))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
                         .addComponent(lblTitulo))
@@ -112,11 +102,11 @@ public class LoginView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(lblNomeUsuario)
                 .addGap(18, 18, 18)
-                .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(lblSenha)
                 .addGap(18, 18, 18)
                 .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -137,10 +127,10 @@ public class LoginView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnEntrar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblNomeUsuario;
+    private javax.swing.JLabel lblSenha;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTextField txtLogin;
+    private javax.swing.JTextField txtNomeUsuario;
     private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 }

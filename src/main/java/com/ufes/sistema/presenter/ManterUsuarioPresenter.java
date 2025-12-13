@@ -1,5 +1,6 @@
 package com.ufes.sistema.presenter;
 
+import com.github.adlersousa.logger.lib.LoggerLib;
 import com.ufes.sistema.model.Usuario;
 import com.ufes.sistema.repository.IUsuarioRepository;
 import com.ufes.sistema.view.CadastroUsuarioView;
@@ -7,8 +8,11 @@ import com.ufes.sistema.view.ManterUsuarioView;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 public class ManterUsuarioPresenter {
 
@@ -41,10 +45,12 @@ public class ManterUsuarioPresenter {
     }
 
     private void carregarTabela() {
+        
+        try{
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("Nome");
-        modelo.addColumn("Email");
+        modelo.addColumn("Nome de Usuário");
         modelo.addColumn("Data de Cadastro");
         modelo.addColumn("Total de notificações enviadas");
         modelo.addColumn("Total de notificações lidas");
@@ -59,7 +65,7 @@ public class ManterUsuarioPresenter {
             modelo.addRow(new Object[]{
                 u.getId(),
                 u.getNome(),
-                u.getLogin(),
+                u.getNomeUsuario(),
                 u.getDataCadastro().format(fmt),
                 u.getNotificacoesEnviadas(),
                 u.getNotificacoesLidas(),
@@ -72,6 +78,10 @@ public class ManterUsuarioPresenter {
         view.getTabela().getColumnModel().getColumn(0).setPreferredWidth(30);
         view.getTabela().getColumnModel().getColumn(4).setPreferredWidth(300); 
         view.getTabela().getColumnModel().getColumn(5).setPreferredWidth(300);
+        } catch(Exception e){
+            view.mostrarMensagem("Erro ao carregar lista de usuários: " + e.getMessage());
+            LoggerLib.getInstance().escrever("LISTAGEM_USUARIOS", "SISTEMA", usuarioLogado.getNome(), false, e.getMessage());
+        }
     }
 
     private void autorizar(ActionEvent e) {
@@ -87,6 +97,14 @@ public class ManterUsuarioPresenter {
         
         repository.atualizar(u);
         
+        LoggerLib.getInstance().escrever(
+            "AUTORIZACAO_USUARIO", 
+            u.getNome(),
+            usuarioLogado.getNome(),
+            true, 
+            null
+        );
+        
         view.mostrarMensagem("Usuário autorizado com sucesso.");
         carregarTabela();
     }
@@ -96,12 +114,12 @@ public class ManterUsuarioPresenter {
         if (usuarioAlvo == null) return;
         
         if (!repository.isPrimeiroUsuario(usuarioLogado.getId())) {
-            view.mostrarMensagem("Permissão negada: Apenas o Administrador Fundador pode alterar perfis (promover/rebaixar).");
+            view.mostrarMensagem("Permissão negada: Apenas o Administrador Inicial pode alterar perfis (promover/rebaixar).");
             return;
         }
 
         if (repository.isPrimeiroUsuario(usuarioAlvo.getId())) {
-            view.mostrarMensagem("Operação bloqueada: O Administrador Fundador não pode ser rebaixado!");
+            view.mostrarMensagem("Operação bloqueada: O Administrador Inicial não pode ser rebaixado!");
             return;
         }
 
@@ -109,6 +127,14 @@ public class ManterUsuarioPresenter {
         usuarioAlvo.setAdmin(novoStatus);
         
         repository.atualizar(usuarioAlvo);
+        
+        LoggerLib.getInstance().escrever(
+            "ALTERACAO_USUARIO", 
+            usuarioAlvo.getNome(), 
+            usuarioLogado.getNome(), 
+            true, 
+            "Alteração de perfil para: " + (novoStatus ? "Administrador" : "Padrão")
+        );
         
         String msg = novoStatus ? "promovido a Administrador." : "rebaixado a Usuário Padrão.";
         view.mostrarMensagem("Sucesso: Usuário " + usuarioAlvo.getNome() + " foi " + msg);
@@ -133,7 +159,7 @@ public class ManterUsuarioPresenter {
         }
         
         if (!fundador && usuarioAlvo.isAdmin()) {
-            view.mostrarMensagem("Permissão negada: Apenas o Administrador Fundador pode excluir outros administradores.");
+            view.mostrarMensagem("Permissão negada: Apenas o Administrador Inicial pode excluir outros administradores.");
             return;
         }
         
@@ -147,15 +173,23 @@ public class ManterUsuarioPresenter {
 
         if (confirmacao == JOptionPane.YES_OPTION) {
             try {
+                String nomeAlvo = usuarioAlvo.getNome();
                 repository.deletar(usuarioAlvo.getId());
                 view.mostrarMensagem("Usuário excluído com sucesso!");
                 
-                // TODO: Registrar LOG: EXCLUSAO_USUARIO
+                LoggerLib.getInstance().escrever(
+                    "EXCLUSAO_USUARIO", 
+                    nomeAlvo, 
+                    usuarioLogado.getNome(), 
+                    true, 
+                    null
+                );
                 
                 carregarTabela();
                 
             } catch (Exception ex) {
                 view.mostrarMensagem("Erro ao excluir: " + ex.getMessage());
+                LoggerLib.getInstance().escrever("EXCLUSAO_USUARIO", usuarioAlvo.getNome(), usuarioLogado.getNome(), false, ex.getMessage());
             }
         }
     }
@@ -167,13 +201,18 @@ public class ManterUsuarioPresenter {
     private void abrirTelaCadastro() {
         CadastroUsuarioView cadastroView = new CadastroUsuarioView();
         
-        cadastroView.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        cadastroView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
-        CadastroUsuarioPresenter cadastroPresenter = new CadastroUsuarioPresenter(cadastroView, repository, true);
+        CadastroUsuarioPresenter cadastroPresenter = new CadastroUsuarioPresenter(
+            cadastroView, 
+            repository, 
+            true, 
+            this.usuarioLogado
+        );
         
-        cadastroView.addWindowListener(new java.awt.event.WindowAdapter() {
+        cadastroView.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(java.awt.event.WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
                 carregarTabela();
             }
         });

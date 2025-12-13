@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.presenter;
 
 import com.ufes.sistema.model.Usuario;
@@ -14,13 +10,10 @@ import com.ufes.sistema.view.AlterarSenhaView;
 import com.ufes.sistema.view.EnviarNotificacaoView;
 import com.ufes.sistema.view.ManterUsuarioView;
 import com.ufes.sistema.view.MinhasNotificacoesView;
+import com.ufes.sistema.view.RestaurarSistemaView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Adler
- */
 public class PrincipalPresenter {
 
     private final PrincipalView view;
@@ -102,7 +95,6 @@ public class PrincipalPresenter {
         this.view.getMitAlterarSenha().addActionListener((ActionEvent e) -> {
             AlterarSenhaView alterarSenhaView = new AlterarSenhaView();
 
-            
             new AlterarSenhaPresenter(alterarSenhaView, repository, usuarioLogado);
 
             this.view.getDesktopPane().add(alterarSenhaView);
@@ -119,8 +111,27 @@ public class PrincipalPresenter {
             this.view.getDesktopPane().add(minhasNotifView);
             minhasNotifView.toFront();
         });
+        
+        this.view.getMitRestaurarSistema().addActionListener(e -> {
+            if (!repository.isPrimeiroUsuario(usuarioLogado.getId())) {
+                 JOptionPane.showMessageDialog(view, "Apenas o Administrador Inicial pode realizar esta operação.");
+                 return;
+            }
 
-    }
+            RestaurarSistemaView resetView = new RestaurarSistemaView();
+            view.getDesktopPane().add(resetView);
+
+            new RestaurarSistemaPresenter(resetView, repository, usuarioLogado);
+
+            resetView.toFront();
+            try { resetView.setSelected(true); } catch (Exception ex) {}
+            });
+
+            if (!repository.isPrimeiroUsuario(usuarioLogado.getId())) {
+                this.view.getMitRestaurarSistema().setVisible(false);
+            }
+
+        }
 
     private void fecharSistema() {
         System.exit(0);

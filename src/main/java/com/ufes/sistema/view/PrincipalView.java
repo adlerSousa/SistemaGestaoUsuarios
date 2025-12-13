@@ -1,26 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.ufes.sistema.view;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JLabel;
+import javax.swing.JFrame;
 
-
-/**
- *
- * @author Adler
- */
-public class PrincipalView extends javax.swing.JFrame {
+public class PrincipalView extends JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PrincipalView.class.getName());
-
-    /**
-     * Creates new form PrincipalView
-     */
     public PrincipalView() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -35,6 +23,7 @@ public class PrincipalView extends javax.swing.JFrame {
     public JMenuItem getMitConfigurarLog() { return mitConfigurarLog; } 
     public JMenuItem getMitAlterarSenha() { return mitAlterarSenha; } 
     public JMenuItem getMitSair() { return mitSair; }
+    public JMenuItem getMitRestaurarSistema(){ return mitRestaurarSistema;}
     public JLabel getLblUsuario() { return lblUsuario; }
     public JButton getBtnNotificacoes() { return btnNotificacoes; }
 
@@ -57,6 +46,7 @@ public class PrincipalView extends javax.swing.JFrame {
         mitManterUsuarios = new javax.swing.JMenuItem();
         mitEnviarNotificacao = new javax.swing.JMenuItem();
         mitConfigurarLog = new javax.swing.JMenuItem();
+        mitRestaurarSistema = new javax.swing.JMenuItem();
         mnuMinhaConta = new javax.swing.JMenu();
         mitAlterarSenha = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -118,6 +108,9 @@ public class PrincipalView extends javax.swing.JFrame {
         mitConfigurarLog.setText("Configurar Log");
         mnuAdministracao.add(mitConfigurarLog);
 
+        mitRestaurarSistema.setText("Restaurar Sistema");
+        mnuAdministracao.add(mitRestaurarSistema);
+
         jMenuBar1.add(mnuAdministracao);
 
         mnuMinhaConta.setText("Minha Conta");
@@ -148,6 +141,7 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitConfigurarLog;
     private javax.swing.JMenuItem mitEnviarNotificacao;
     private javax.swing.JMenuItem mitManterUsuarios;
+    private javax.swing.JMenuItem mitRestaurarSistema;
     private javax.swing.JMenuItem mitSair;
     private javax.swing.JMenu mnuAdministracao;
     private javax.swing.JMenu mnuMinhaConta;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.presenter;
 
 import com.github.adlersousa.logger.lib.LoggerLib;
@@ -11,17 +7,11 @@ import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.view.ConfiguracaoView;
 import java.sql.SQLException;
 
-/**
- *
- * @author Adler
- */
 public class ConfiguracaoPresenter {
 
     private final ConfiguracaoView view;
     private final IConfiguracaoRepository repository;
     private final Usuario administradorLogado; 
-
-    
     private Configuracao configuracaoAtual;
 
     public ConfiguracaoPresenter(ConfiguracaoView view, IConfiguracaoRepository repository, Usuario admin) {

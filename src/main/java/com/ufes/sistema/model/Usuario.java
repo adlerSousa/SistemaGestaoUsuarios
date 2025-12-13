@@ -1,19 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.model;
 
 import java.time.LocalDate;
 
-/**
- *
- * @author Guiguito
- */
 public class Usuario {
     private int id;
     private String nome;
-    private String login;
+    private String nomeUsuario;
     private String senha;
     private Boolean admin;
     private Boolean autorizado;
@@ -21,9 +13,9 @@ public class Usuario {
     private int notificacoesEnviadas;
     private int notificacoesLidas;
 
-    public Usuario(String nome, String login, String senha, Boolean admin, Boolean autorizado, LocalDate dataCadastro) {
+    public Usuario(String nome, String nomeUsuario, String senha, Boolean admin, Boolean autorizado, LocalDate dataCadastro) {
         this.nome = nome;
-        this.login = login;
+        this.nomeUsuario = nomeUsuario;
         this.senha = senha;
         this.admin = admin;
         this.autorizado = autorizado;
@@ -48,12 +40,12 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 
     public String getSenha() {

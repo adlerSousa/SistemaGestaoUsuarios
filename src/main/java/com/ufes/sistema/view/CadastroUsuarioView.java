@@ -1,21 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.util.logging.Logger;
 
-/**
- *
- * @author Guiguito
- */
-public class CadastroUsuarioView extends javax.swing.JFrame {
+public class CadastroUsuarioView extends JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CadastroUsuarioView.class.getName());
+    private static final Logger logger = Logger.getLogger(CadastroUsuarioView.class.getName());
 
     public CadastroUsuarioView() {
         initComponents();
@@ -31,11 +23,11 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
     private void initComponents() {
 
         lblNome = new javax.swing.JLabel();
-        lblEmail = new javax.swing.JLabel();
+        lblNomeUsuario = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         lblConfirmarSenha = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        txtEmail = new javax.swing.JTextField();
+        txtNomeUsuario = new javax.swing.JTextField();
         txtSenha = new javax.swing.JPasswordField();
         txtConfirmarSenha = new javax.swing.JPasswordField();
         lblTitulo = new javax.swing.JLabel();
@@ -45,7 +37,7 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
 
         lblNome.setText("Nome");
 
-        lblEmail.setText("E-mail");
+        lblNomeUsuario.setText("Nome de Usuário");
 
         lblSenha.setText("Senha");
 
@@ -65,11 +57,11 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblConfirmarSenha)
                     .addComponent(lblSenha)
-                    .addComponent(lblEmail)
+                    .addComponent(lblNomeUsuario)
                     .addComponent(lblNome)
                     .addComponent(txtConfirmarSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(248, 248, 248))
@@ -92,9 +84,9 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(lblEmail)
+                .addComponent(lblNomeUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(lblSenha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -139,13 +131,13 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblConfirmarSenha;
-    private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblNomeUsuario;
     private javax.swing.JLabel lblSenha;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPasswordField txtConfirmarSenha;
-    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtNomeUsuario;
     private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 
@@ -153,8 +145,8 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
         return txtNome.getText();
     }
     
-    public String getEmail(){
-        return txtEmail.getText();
+    public String getNomeUsuario(){
+        return txtNomeUsuario.getText();
     }
     
     public String getSenha(){
@@ -165,19 +157,19 @@ public class CadastroUsuarioView extends javax.swing.JFrame {
         return new String(txtConfirmarSenha.getPassword());
     }
 
-    public javax.swing.JButton getBtnSalvar() {
+    public JButton getBtnSalvar() {
         return btnSalvar;
     }
     
     public void limparCampos() {
         txtNome.setText("");
-        txtEmail.setText("");
+        txtNomeUsuario.setText("");
         txtSenha.setText("");
         txtConfirmarSenha.setText("");
     }
     
     public void mostrarMensagem(String msg) {
-        javax.swing.JOptionPane.showMessageDialog(this, msg);
+        JOptionPane.showMessageDialog(this, msg);
     }
     
     public void fechar() {

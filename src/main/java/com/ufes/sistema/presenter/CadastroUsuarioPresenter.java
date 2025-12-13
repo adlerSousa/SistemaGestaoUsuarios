@@ -1,13 +1,15 @@
 package com.ufes.sistema.presenter;
 
-
 import com.github.adlersousa.logger.lib.LoggerLib;
 import com.pss.senha.validacao.ValidadorSenha;
 import com.ufes.sistema.model.Usuario;
+import com.ufes.sistema.repository.IConfiguracaoRepository;
+import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.repository.IUsuarioRepository;
+import com.ufes.sistema.repository.sqlite.ConfiguracaoRepositorySQLite;
+import com.ufes.sistema.repository.sqlite.NotificacaoRepositorySQLite;
 import com.ufes.sistema.view.CadastroUsuarioView;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.ufes.sistema.view.LoginView;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,19 +18,20 @@ public class CadastroUsuarioPresenter {
     private CadastroUsuarioView view;
     private IUsuarioRepository repository;
     private boolean modoAdmin;
+    private Usuario usuarioLogado;
 
     public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository) {
-        this(view, repository, false); // Chama o principal passando false
+        this(view, repository, false, null);
     }
 
-    public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository, boolean isModoAdmin) {
+    public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository, boolean isModoAdmin, Usuario usuarioLogado) {
         this.view = view;
         this.repository = repository;
-        this.modoAdmin = isModoAdmin; // <--- Guarda a informação
+        this.modoAdmin = isModoAdmin;
+        this.usuarioLogado = usuarioLogado;
         
         this.view.getBtnSalvar().addActionListener(e -> salvarUsuario());
         
-        // Se for modo admin, talvez mudar o título da janela?
         if (modoAdmin) {
             this.view.setTitle("Novo Usuário (Modo Administrativo)");
         }
@@ -38,7 +41,7 @@ public class CadastroUsuarioPresenter {
 
     private void salvarUsuario() {
         String nome = view.getNome();
-        String login = view.getEmail();
+        String login = view.getNomeUsuario();
         String senha = view.getSenha();
         String confirmarSenha = view.getConfirmarSenha();
 
@@ -65,8 +68,8 @@ public class CadastroUsuarioPresenter {
         }
         
         try {
-            if (repository.existeUsuarioComLogin(login)) {
-                String msg = "Este E-mail/Login já está cadastrado!";
+            if (repository.existeUsuarioComNomeUsuario(login)) {
+                String msg = "Este Nome de Usuário já está cadastrado!";
                 view.mostrarMensagem(msg);
                 registrarLogFalha(nome,msg);
                 return;
@@ -74,9 +77,11 @@ public class CadastroUsuarioPresenter {
 
             int qtdUsuarios = repository.contarUsuarios();
             
-            boolean ehPrimeiro = (qtdUsuarios == 0);   
-            boolean autorizado = ehPrimeiro || this.modoAdmin; 
-            boolean admin = ehPrimeiro;   
+            boolean isPrimeiro = (qtdUsuarios == 0);   
+            
+            boolean autorizado = isPrimeiro || this.modoAdmin; 
+            
+            boolean admin = isPrimeiro;    
 
             Usuario novoUsuario = new Usuario(
                 nome, 
@@ -89,18 +94,36 @@ public class CadastroUsuarioPresenter {
 
             repository.cadastrarUsuario(novoUsuario);
             
-            LoggerLib.getInstance().escrever("INCLUSAO_USUARIO", novoUsuario.getNome(), "SISTEMA", true, null);
+            Usuario usuarioSalvo = repository.buscarPorNomeUsuario(login); 
+            
+            String autor = (modoAdmin && usuarioLogado != null) ? usuarioLogado.getNome() : "SISTEMA";
+            LoggerLib.getInstance().escrever("INCLUSAO_USUARIO", novoUsuario.getNome(), autor, true, null);
+
 
             if (modoAdmin) {
                 view.mostrarMensagem("Usuário cadastrado com sucesso e JÁ AUTORIZADO!");
                 view.fechar();
-            } else {
-                String msg = "Usuário cadastrado com sucesso!";
-                if(ehPrimeiro) msg += "\nVocê é o ADMINISTRADOR.";
-                else msg += "\nAguarde autorização.";
                 
-                view.mostrarMensagem(msg);
-                view.limparCampos();
+            } else {
+                
+                if (isPrimeiro) {
+                    view.mostrarMensagem("Cadastro realizado! Você é o Administrador Inicial.\nO sistema será iniciado automaticamente.");
+                    
+                    INotificacaoRepository nRepo = new NotificacaoRepositorySQLite();
+                    IConfiguracaoRepository cRepo = new ConfiguracaoRepositorySQLite();
+                    
+                    new PrincipalPresenter(usuarioSalvo, repository, nRepo, cRepo);
+                    
+                } else {
+                    view.mostrarMensagem("Usuário cadastrado com sucesso!\nAguarde autorização do administrador.");
+                    
+                    INotificacaoRepository nRepo = new NotificacaoRepositorySQLite();
+                    IConfiguracaoRepository cRepo = new ConfiguracaoRepositorySQLite();
+                    
+                    LoginView loginView = new LoginView();
+                    new LoginPresenter(loginView, repository, nRepo, cRepo);
+                }
+                
                 view.fechar();
             }
 
