@@ -10,6 +10,7 @@ import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.view.ConfiguracaoView;
 import com.ufes.sistema.view.PrincipalView;
+import com.ufes.sistema.view.AlterarSenhaView;
 import com.ufes.sistema.view.EnviarNotificacaoView;
 import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.awt.event.ActionEvent;
@@ -73,11 +74,10 @@ public class PrincipalPresenter {
         });
 
         this.view.getMitConfigurarLog().addActionListener((ActionEvent e) -> {
-            
+
             if (usuarioLogado.isAdmin()) {
                 ConfiguracaoView configView = new ConfiguracaoView();
 
-              
                 new ConfiguracaoPresenter(configView, configuracaoRepository, usuarioLogado);
 
                 this.view.getDesktopPane().add(configView);
@@ -88,7 +88,13 @@ public class PrincipalPresenter {
         });
 
         this.view.getMitAlterarSenha().addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(view, "Tela de Alterar Senha");
+            AlterarSenhaView alterarSenhaView = new AlterarSenhaView();
+
+            
+            new AlterarSenhaPresenter(alterarSenhaView, repository, usuarioLogado);
+
+            this.view.getDesktopPane().add(alterarSenhaView);
+            alterarSenhaView.toFront();
         });
 
         this.view.getMitSair().addActionListener((ActionEvent e) -> {
