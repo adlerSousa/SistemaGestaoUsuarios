@@ -12,6 +12,7 @@ import com.ufes.sistema.view.ConfiguracaoView;
 import com.ufes.sistema.view.PrincipalView;
 import com.ufes.sistema.view.AlterarSenhaView;
 import com.ufes.sistema.view.EnviarNotificacaoView;
+import com.ufes.sistema.view.ManterUsuarioView;
 import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -60,6 +61,17 @@ public class PrincipalPresenter {
     }
 
     private void inicializarMenus() {
+        
+        this.view.getMitManterUsuarios().addActionListener((ActionEvent e) -> {
+            ManterUsuarioView manterView = new ManterUsuarioView();
+
+            view.getDesktopPane().add(manterView);
+
+            new ManterUsuarioPresenter(manterView, repository, usuarioLogado);
+
+            manterView.toFront();
+            try { manterView.setSelected(true); } catch (Exception ex) {}
+        });
 
         this.view.getMitEnviarNotificacao().addActionListener((ActionEvent e) -> {
             if (usuarioLogado.isAdmin()) {

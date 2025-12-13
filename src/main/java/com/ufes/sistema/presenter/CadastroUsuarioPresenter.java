@@ -15,17 +15,23 @@ public class CadastroUsuarioPresenter {
 
     private CadastroUsuarioView view;
     private IUsuarioRepository repository;
+    private boolean modoAdmin;
 
     public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository) {
+        this(view, repository, false); // Chama o principal passando false
+    }
+
+    public CadastroUsuarioPresenter(CadastroUsuarioView view, IUsuarioRepository repository, boolean isModoAdmin) {
         this.view = view;
         this.repository = repository;
+        this.modoAdmin = isModoAdmin; // <--- Guarda a informação
         
-        this.view.getBtnSalvar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                salvarUsuario();
-            }
-        });
+        this.view.getBtnSalvar().addActionListener(e -> salvarUsuario());
+        
+        // Se for modo admin, talvez mudar o título da janela?
+        if (modoAdmin) {
+            this.view.setTitle("Novo Usuário (Modo Administrativo)");
+        }
         
         this.view.setVisible(true);
     }
@@ -68,9 +74,9 @@ public class CadastroUsuarioPresenter {
 
             int qtdUsuarios = repository.contarUsuarios();
             
-            boolean ehPrimeiro = (qtdUsuarios == 0);
-            boolean admin = ehPrimeiro;      
-            boolean autorizado = ehPrimeiro; 
+            boolean ehPrimeiro = (qtdUsuarios == 0);   
+            boolean autorizado = ehPrimeiro || this.modoAdmin; 
+            boolean admin = ehPrimeiro;   
 
             Usuario novoUsuario = new Usuario(
                 nome, 
@@ -85,16 +91,18 @@ public class CadastroUsuarioPresenter {
             
             LoggerLib.getInstance().escrever("INCLUSAO_USUARIO", novoUsuario.getNome(), "SISTEMA", true, null);
 
-            String msg = "Usuário cadastrado com sucesso!";
-            if(ehPrimeiro) {
-                msg += "\nVocê é o ADMINISTRADOR do sistema.";
+            if (modoAdmin) {
+                view.mostrarMensagem("Usuário cadastrado com sucesso e JÁ AUTORIZADO!");
+                view.fechar();
             } else {
-                msg += "\nAguarde autorização do administrador.";
+                String msg = "Usuário cadastrado com sucesso!";
+                if(ehPrimeiro) msg += "\nVocê é o ADMINISTRADOR.";
+                else msg += "\nAguarde autorização.";
+                
+                view.mostrarMensagem(msg);
+                view.limparCampos();
+                view.fechar();
             }
-            
-            view.mostrarMensagem(msg);
-            view.limparCampos(); 
-            view.fechar();
 
         } catch (Exception e) {
             registrarLogFalha(nome, e.getMessage());
