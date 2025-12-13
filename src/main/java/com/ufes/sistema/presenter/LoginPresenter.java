@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.presenter;
 
 import com.github.adlersousa.logger.lib.LoggerLib;
@@ -15,10 +11,6 @@ import com.ufes.sistema.view.CadastroUsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author Adler
- */
 public class LoginPresenter {
 
     private LoginView view;
@@ -26,7 +18,6 @@ public class LoginPresenter {
     private INotificacaoRepository nRepository;
     private IConfiguracaoRepository cRepository;
     
-
     public LoginPresenter(LoginView view, IUsuarioRepository repository,INotificacaoRepository nRepository, IConfiguracaoRepository cRepository) {
         this.view = view;
         this.repository = repository;
@@ -48,25 +39,24 @@ public class LoginPresenter {
            }
         });
 
-       
         this.view.setVisible(true);
     }
 
     private void autenticar() {
-        String login = view.getLogin();
+        String nomeUsuario = view.getNomeUsuario();
         String senha = view.getSenha();
 
-        if (login.isEmpty() || senha.isEmpty()) {
+        if (nomeUsuario.isEmpty() || senha.isEmpty()) {
             view.mostrarMensagem("Preencha login e senha!");
             return;
         }
 
         try {
-            Usuario usuario = repository.buscarPorLogin(login);
+            Usuario usuario = repository.buscarPorNomeUsuario(nomeUsuario);
 
             if (usuario == null) {
                 view.mostrarMensagem("Usuário não encontrado!");
-                LoggerLib.getInstance().escrever("LOGIN", login, "SISTEMA", false, "Usuário não encontrado");
+                LoggerLib.getInstance().escrever("LOGIN", nomeUsuario, "SISTEMA", false, "Usuário não encontrado");
                 return;
             }
 
@@ -89,7 +79,7 @@ public class LoginPresenter {
 
         } catch (Exception e) {
 
-            LoggerLib.getInstance().escrever("LOGIN", login, "SISTEMA", false, "Erro técnico: " + e.getMessage());
+            LoggerLib.getInstance().escrever("LOGIN", nomeUsuario, "SISTEMA", false, "Erro técnico: " + e.getMessage());
             
             view.mostrarMensagem("Erro ao tentar autenticar: " + e.getMessage());
             e.printStackTrace();

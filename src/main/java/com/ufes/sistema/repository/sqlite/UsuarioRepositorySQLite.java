@@ -23,7 +23,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
                 CREATE TABLE IF NOT EXISTS usuario (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nome TEXT NOT NULL,
-                    login TEXT UNIQUE NOT NULL, 
+                    nome_usuario TEXT UNIQUE NOT NULL, 
                     senha TEXT NOT NULL,
                     admin BOOLEAN NOT NULL DEFAULT 0,
                     autorizado BOOLEAN NOT NULL DEFAULT 0,
@@ -40,12 +40,12 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
 
     @Override
     public void cadastrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuario (nome, login, senha, admin, autorizado, data_cadastro) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, nome_usuario, senha, admin, autorizado, data_cadastro) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getNome());
-            ps.setString(2, usuario.getLogin());
+            ps.setString(2, usuario.getNomeUsuario());
             ps.setString(3, usuario.getSenha());
             ps.setBoolean(4, usuario.isAdmin());
             ps.setBoolean(5, usuario.isAutorizado());
@@ -74,11 +74,11 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
     }
 
     @Override
-    public boolean existeUsuarioComLogin(String login) {
+    public boolean existeUsuarioComNomeUsuario(String nomeUsuario) {
         String sql = "SELECT 1 FROM usuario WHERE login = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, login);
+            ps.setString(1, nomeUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
@@ -90,23 +90,22 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
     }
 
     @Override
-    public Usuario buscarPorLogin(String login) {
+    public Usuario buscarPorNomeUsuario(String nomeUsuario) {
         String sql = "SELECT * FROM usuario WHERE login = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, login);
+            ps.setString(1, nomeUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Reconstrói o objeto Usuario vindo do banco
                     Usuario u = new Usuario(
                             rs.getString("nome"),
-                            rs.getString("login"),
+                            rs.getString("nome_usuario"),
                             rs.getString("senha"),
                             rs.getBoolean("admin"),
                             rs.getBoolean("autorizado"),
                             java.time.LocalDate.parse(rs.getString("data_cadastro"))
                     );
-                    u.setId(rs.getInt("id")); // Importante pegar o ID
+                    u.setId(rs.getInt("id"));
                     return u;
                 }
             }
@@ -132,10 +131,9 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
              ResultSet rs = stmt.executeQuery(sql)) {
             
             while (rs.next()) {
-                // 1. Cria o usuário com os dados normais
                 Usuario u = new Usuario(
                     rs.getString("nome"),
-                    rs.getString("login"),
+                    rs.getString("nome_usuario"),
                     rs.getString("senha"),
                     rs.getBoolean("admin"),
                     rs.getBoolean("autorizado"),
@@ -143,7 +141,6 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
                 );
                 u.setId(rs.getInt("id"));
 
-                // 2. Preenche os dados estatísticos que vieram do SQL
                 u.setNotificacoesEnviadas(rs.getInt("total_msg"));
                 u.setNotificacoesLidas(rs.getInt("lidas_msg"));
                 
@@ -174,7 +171,7 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setString(1, usuario.getNome());
-            ps.setString(2, usuario.getLogin());
+            ps.setString(2, usuario.getNomeUsuario());
             ps.setString(3, usuario.getSenha());
             ps.setBoolean(4, usuario.isAdmin());
             ps.setBoolean(5, usuario.isAutorizado());
@@ -218,6 +215,30 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    @Override
+    public void restaurarSistemaCompleto() throws Exception {
+        String sqlNotificacoes = "DELETE FROM notificacao";
+        String sqlUsuarios = "DELETE FROM usuario";
+        
+        Connection conn = DatabaseConnection.getInstance().getConnection();
+        boolean autoCommitOriginal = conn.getAutoCommit();
+        
+        try (Statement stmt = conn.createStatement()) {
+            conn.setAutoCommit(false);
+            
+            stmt.executeUpdate(sqlNotificacoes);
+            stmt.executeUpdate(sqlUsuarios);
+            
+            conn.commit();
+            
+        } catch (Exception e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(autoCommitOriginal);
+        }
     }
 
 }

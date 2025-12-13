@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.repository.sqlite;
 
 import com.ufes.sistema.repository.IConfiguracaoRepository;
@@ -12,10 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author Adler
- */
 public class ConfiguracaoRepositorySQLite implements IConfiguracaoRepository {
     
     private static final int CONFIG_ID = 1;

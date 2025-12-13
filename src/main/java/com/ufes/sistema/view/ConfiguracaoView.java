@@ -1,19 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
-/**
- *
- * @author Adler
- */
-public class ConfiguracaoView extends javax.swing.JInternalFrame {
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
-    /**
-     * Creates new form ConfiguracaoView
-     */
-    
+public class ConfiguracaoView extends JInternalFrame {  
     public ConfiguracaoView() {
         initComponents();
     }
@@ -37,7 +27,7 @@ public class ConfiguracaoView extends javax.swing.JInternalFrame {
     }
 
     public void mostrarMensagem(String msg) {
-        javax.swing.JOptionPane.showMessageDialog(this, msg);
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     public void fechar() {

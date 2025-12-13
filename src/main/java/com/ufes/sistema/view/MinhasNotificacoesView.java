@@ -1,46 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package com.ufes.sistema.view;
 
-/**
- *
- * @author Adler
- */
-public class MinhasNotificacoesView extends javax.swing.JInternalFrame {
+import com.ufes.sistema.model.Notificacao;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-    /**
-     * Creates new form MinhasNotificacoesView
-     */
+public class MinhasNotificacoesView extends JInternalFrame {
+
     public MinhasNotificacoesView() {
         initComponents();
     }
 
-    public javax.swing.JButton getBtnMarcarLida() {
+    public JButton getBtnMarcarLida() {
         return btnMarcarLida;
     }
 
-    public javax.swing.JButton getBtnFechar() {
+    public JButton getBtnFechar() {
         return btnFechar;
     }
 
-    public javax.swing.JTable getTblNotificacoes() {
+    public JTable getTblNotificacoes() {
         return tblNotificacoes;
     }
 
     public void mostrarMensagem(String msg) {
-        javax.swing.JOptionPane.showMessageDialog(this, msg);
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     public void fechar() {
         this.dispose();
     }
 
-    public void carregarTabela(java.util.List<com.ufes.sistema.model.Notificacao> lista) {
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblNotificacoes.getModel();
+    public void carregarTabela(List<Notificacao> lista) {
+        DefaultTableModel model = (DefaultTableModel) tblNotificacoes.getModel();
         model.setRowCount(0);
-        for (com.ufes.sistema.model.Notificacao n : lista) {
+        for (Notificacao n : lista) {
             model.addRow(new Object[]{
                 n.getId(),
                 n.getConteudo(),

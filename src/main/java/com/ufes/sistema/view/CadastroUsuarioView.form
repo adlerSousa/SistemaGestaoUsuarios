@@ -27,11 +27,11 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="txtSenha" min="-2" pref="237" max="-2" attributes="0"/>
-                  <Component id="txtEmail" min="-2" pref="237" max="-2" attributes="0"/>
+                  <Component id="txtNomeUsuario" min="-2" pref="237" max="-2" attributes="0"/>
                   <Component id="txtNome" min="-2" pref="237" max="-2" attributes="0"/>
                   <Component id="lblConfirmarSenha" min="-2" max="-2" attributes="0"/>
                   <Component id="lblSenha" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblEmail" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNomeUsuario" min="-2" max="-2" attributes="0"/>
                   <Component id="lblNome" min="-2" max="-2" attributes="0"/>
                   <Component id="txtConfirmarSenha" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
               </Group>
@@ -61,9 +61,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="txtNome" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Component id="lblEmail" min="-2" max="-2" attributes="0"/>
+              <Component id="lblNomeUsuario" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
+              <Component id="txtNomeUsuario" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Component id="lblSenha" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -85,9 +85,9 @@
         <Property name="text" type="java.lang.String" value="Nome"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblEmail">
+    <Component class="javax.swing.JLabel" name="lblNomeUsuario">
       <Properties>
-        <Property name="text" type="java.lang.String" value="E-mail"/>
+        <Property name="text" type="java.lang.String" value="Nome de Usu&#xe1;rio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSenha">
@@ -102,7 +102,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtNome">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtEmail">
+    <Component class="javax.swing.JTextField" name="txtNomeUsuario">
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtSenha">
     </Component>

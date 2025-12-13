@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ufes.sistema.presenter;
 
 import com.github.adlersousa.logger.lib.LoggerLib;
@@ -11,10 +7,6 @@ import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.view.MinhasNotificacoesView;
 import java.util.List;
 
-/**
- *
- * @author Adler
- */
 public class MinhasNotificacoesPresenter {
     private final MinhasNotificacoesView view;
     private final INotificacaoRepository repository;
@@ -36,8 +28,20 @@ public class MinhasNotificacoesPresenter {
     }
 
     private void carregarNotificacoes() {
-        this.notificacoesAtuais = repository.buscarPorDestinatario(usuarioLogado.getId());
-        view.carregarTabela(notificacoesAtuais);
+        try{
+            this.notificacoesAtuais = repository.buscarPorDestinatario(usuarioLogado.getId());
+            view.carregarTabela(notificacoesAtuais);
+        } catch(Exception e){
+            view.mostrarMensagem("Erro ao carregar notificações: " + e.getMessage());
+            
+            LoggerLib.getInstance().escrever(
+                "LEITURA_NOTIFICACAO", 
+                "Listagem", 
+                usuarioLogado.getNome(), 
+                false, 
+                "Falha ao buscar dados: " + e.getMessage()
+            );
+        }
     }
 
     private void marcarComoLida() {
@@ -46,7 +50,7 @@ public class MinhasNotificacoesPresenter {
             view.mostrarMensagem("Selecione uma notificação!");
             return;
         }
-
+        
         try {
             Notificacao n = notificacoesAtuais.get(linha);
             repository.marcarComoLida(n.getId());
@@ -66,7 +70,15 @@ public class MinhasNotificacoesPresenter {
             principalPresenter.atualizarRodape(); 
 
         } catch (Exception e) {
-            view.mostrarMensagem("Erro: " + e.getMessage());
+            view.mostrarMensagem("Erro ao marcar como lida: " + e.getMessage());
+            
+            LoggerLib.getInstance().escrever(
+                "LEITURA_NOTIFICACAO", 
+                usuarioLogado.getNome(), 
+                usuarioLogado.getNome(), 
+                false, 
+                e.getMessage()
+            );
         }
     }
 }

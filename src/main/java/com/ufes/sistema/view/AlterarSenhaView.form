@@ -36,7 +36,7 @@
                   <Component id="txtConfirmacao" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSalvar" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="68" max="32767" attributes="0"/>
+              <EmptySpace pref="86" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,9 +75,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtSenhaAtual">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNova">
       <Properties>
@@ -85,9 +82,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtNovaSenha">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNovaSenhaActionPerformed"/>
       </Events>
@@ -98,9 +92,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtConfirmacao">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnFechar">
       <Properties>
