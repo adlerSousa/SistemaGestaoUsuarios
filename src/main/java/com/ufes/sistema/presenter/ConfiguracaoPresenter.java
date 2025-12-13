@@ -42,7 +42,6 @@ public class ConfiguracaoPresenter {
             
             this.configuracaoAtual = repository.buscarConfiguracao();
 
-           
             view.setFormatoSelecionado(configuracaoAtual.getFormatoLog());
 
         } catch (SQLException e) {
@@ -58,7 +57,6 @@ public class ConfiguracaoPresenter {
             view.mostrarMensagem("Selecione um formato de log válido.");
             return;
         }
-
         
         configuracaoAtual.setFormatoLog(novoFormato);
 
@@ -66,10 +64,8 @@ public class ConfiguracaoPresenter {
           
             repository.salvar(configuracaoAtual);
 
-         
             LoggerLib.setTipoLog(novoFormato);
 
-            
             LoggerLib.getInstance().escrever(
                     "ALTERACAO_CONFIGURACAO",
                     "Formato Log", 

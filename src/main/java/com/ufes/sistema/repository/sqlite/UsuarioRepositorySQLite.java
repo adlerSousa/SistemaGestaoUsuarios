@@ -118,29 +118,41 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
 
     @Override
     public List<Usuario> buscarTodos() {
-        List<Usuario> usuarios = new ArrayList<>();
-        String sql = "SELECT * FROM usuario ORDER BY nome ASC";
-
-        try (Connection conn = DatabaseConnection.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
+        List<Usuario> lista = new ArrayList<>();
+        
+        String sql = """
+            SELECT u.*, 
+            (SELECT COUNT(*) FROM notificacao n WHERE n.id_destinatario = u.id) as total_msg,
+            (SELECT COUNT(*) FROM notificacao n WHERE n.id_destinatario = u.id AND n.lida = 1) as lidas_msg
+            FROM usuario u
+        """;
+        
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             while (rs.next()) {
+                // 1. Cria o usuário com os dados normais
                 Usuario u = new Usuario(
-                        rs.getString("nome"),
-                        rs.getString("login"),
-                        rs.getString("senha"),
-                        rs.getBoolean("admin"),
-                        rs.getBoolean("autorizado"),
-                        java.time.LocalDate.parse(rs.getString("data_cadastro"))
+                    rs.getString("nome"),
+                    rs.getString("login"),
+                    rs.getString("senha"),
+                    rs.getBoolean("admin"),
+                    rs.getBoolean("autorizado"),
+                    java.time.LocalDate.parse(rs.getString("data_cadastro"))
                 );
                 u.setId(rs.getInt("id"));
-                usuarios.add(u);
-            }
 
+                // 2. Preenche os dados estatísticos que vieram do SQL
+                u.setNotificacoesEnviadas(rs.getInt("total_msg"));
+                u.setNotificacoesLidas(rs.getInt("lidas_msg"));
+                
+                lista.add(u);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
-        return usuarios;
+        return lista;
     }
 
     @Override
@@ -152,6 +164,60 @@ public class UsuarioRepositorySQLite implements IUsuarioRepository {
             ps.setInt(2, idUsuario);
             ps.executeUpdate();
         }
+    }
+    
+    @Override
+    public void atualizar(Usuario usuario) {
+        String sql = "UPDATE usuario SET nome=?, login=?, senha=?, admin=?, autorizado=? WHERE id=?";
+        
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getLogin());
+            ps.setString(3, usuario.getSenha());
+            ps.setBoolean(4, usuario.isAdmin());
+            ps.setBoolean(5, usuario.isAutorizado());
+            ps.setInt(6, usuario.getId());
+            
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar usuário: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deletar(int id) {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar usuário: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public boolean isPrimeiroUsuario(int id){
+        String sql = "SELECT MIN(id) as id_inicial FROM usuario";
+        
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                int idPrimeiro = rs.getInt("id_inicial");
+                return id == idPrimeiro; 
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

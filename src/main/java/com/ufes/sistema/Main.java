@@ -21,18 +21,7 @@ import javax.swing.JOptionPane;
  * @author Adler
  */
 public class Main {
-    public static void main(String[] args) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            // Se der erro, usa o padrão do Java mesmo, sem problemas
-        }
-        
+    public static void main(String[] args) {        
         try{
             IUsuarioRepository repository = new UsuarioRepositorySQLite();
             INotificacaoRepository nRepository = new NotificacaoRepositorySQLite();

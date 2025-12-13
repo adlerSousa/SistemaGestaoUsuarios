@@ -11,6 +11,7 @@ import com.ufes.sistema.repository.INotificacaoRepository;
 import com.ufes.sistema.repository.IConfiguracaoRepository;
 import com.ufes.sistema.view.LoginView;
 import com.ufes.sistema.presenter.PrincipalPresenter;
+import com.ufes.sistema.view.CadastroUsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,6 +39,13 @@ public class LoginPresenter {
             public void actionPerformed(ActionEvent e) {
                 autenticar();
             }
+        });
+        
+        this.view.getBtnCadastrar().addActionListener(new ActionListener(){
+           @Override
+           public void actionPerformed(ActionEvent e){
+               abrirTelaCadastro();
+           }
         });
 
        
@@ -88,4 +96,9 @@ public class LoginPresenter {
         }
     }
 
+    private void abrirTelaCadastro() {
+        CadastroUsuarioView cadastroView = new CadastroUsuarioView();
+        new CadastroUsuarioPresenter(cadastroView, repository);
+        view.fechar();
+    }
 }

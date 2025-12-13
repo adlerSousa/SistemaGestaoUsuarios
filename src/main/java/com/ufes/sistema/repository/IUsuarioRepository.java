@@ -10,4 +10,7 @@ public interface IUsuarioRepository {
     int contarUsuarios();
     Usuario buscarPorLogin(String login);
     List<Usuario> buscarTodos();
+    void atualizar(Usuario usuario);
+    void deletar(int idUsuario);
+    boolean isPrimeiroUsuario(int id);
 }

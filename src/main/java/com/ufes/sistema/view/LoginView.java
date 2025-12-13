@@ -4,6 +4,7 @@
  */
 package com.ufes.sistema.view;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,8 +32,12 @@ public class LoginView extends javax.swing.JFrame {
         return new String(txtSenha.getPassword());
     }
 
-    public javax.swing.JButton getBtnEntrar() {
+    public JButton getBtnEntrar() {
         return btnEntrar;
+    }
+    
+    public JButton getBtnCadastrar(){
+        return btnCadastrar;
     }
 
     public void mostrarMensagem(String msg) {
@@ -58,6 +63,7 @@ public class LoginView extends javax.swing.JFrame {
         btnEntrar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
+        btnCadastrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,6 +75,11 @@ public class LoginView extends javax.swing.JFrame {
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblTitulo.setText("Login");
+
+        btnCadastrar.setBackground(new java.awt.Color(242, 242, 242));
+        btnCadastrar.setText("<html><u>Cadastre-se</u></html>");
+        btnCadastrar.setBorder(null);
+        btnCadastrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,7 +100,10 @@ public class LoginView extends javax.swing.JFrame {
                         .addComponent(lblTitulo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(142, 142, 142)
-                        .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -97,7 +111,7 @@ public class LoginView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -107,7 +121,9 @@ public class LoginView extends javax.swing.JFrame {
                 .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEntrar)
-                .addGap(32, 32, 32))
+                .addGap(3, 3, 3)
+                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -119,6 +135,7 @@ public class LoginView extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
